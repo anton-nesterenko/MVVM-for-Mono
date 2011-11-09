@@ -1,0 +1,18 @@
+MVVM for Mono
+
+This extension is for use with the Mono for Android and MonoTouch frameworks by Xamarin.
+- http://android.xamarin.com/
+- http://xamarin.com/monotouch
+
+Current Status:
+ - Android has been started, however doesn't compile.
+ - iOS has not been started.
+ - WP7 has not been started (It requires the core API to integrate with WP7 interfaces nicely)
+
+ We are looking for more people to help develop this project, no matter how small the contribution. Constructive criticism is welcome.
+ 
+Downloads:
+ - This package will be avaliable via nuget, but for now is on github only.
+
+ More information:
+ - Please see the wiki
