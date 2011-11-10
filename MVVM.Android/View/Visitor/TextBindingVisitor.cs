@@ -1,10 +1,11 @@
 ﻿using System;
+using MVVM.Common.View;
 
 namespace Mvvm.Android.View.Visitor
 {
     public class TextBindingVisitor : IVisitor
     {
-        public void Visit(global::Mvvm.Android.View.Element.Element element)
+        public void Visit(IElement element)
         {
             throw new NotImplementedException();
         }
