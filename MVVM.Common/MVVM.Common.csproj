@@ -5,21 +5,14 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{16850A95-E187-4A62-AF2F-9332A83EC328}</ProjectGuid>
+    <ProjectGuid>{C58AF451-086E-4137-ACA0-E43505F305A4}</ProjectGuid>
     <ProjectTypeGuids>{EFBA0AD7-5A72-4C68-AF49-83D382785DCF};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Ordo.Android.Mvvm</RootNamespace>
-    <AssemblyName>Ordo.Android.Mvvm</AssemblyName>
+    <RootNamespace>MVVM.Common</RootNamespace>
+    <AssemblyName>MVVM.Common</AssemblyName>
     <FileAlignment>512</FileAlignment>
     <GenerateSerializationAssemblies>Off</GenerateSerializationAssemblies>
-    <AndroidSupportedAbis>armeabi%3barmeabi-v7a</AndroidSupportedAbis>
-    <AndroidStoreUncompressedFileExtensions />
-    <MandroidI18n />
-    <SccProjectName>Svn</SccProjectName>
-    <SccLocalPath>Svn</SccLocalPath>
-    <SccAuxPath>Svn</SccAuxPath>
-    <SccProvider>SubversionScc</SccProvider>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -28,8 +21,7 @@
     <OutputPath>bin\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>2</WarningLevel>
-    <AndroidLinkMode>None</AndroidLinkMode>
+    <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -38,11 +30,8 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <AndroidLinkMode>SdkOnly</AndroidLinkMode>
-    <AndroidUseSharedRuntime>false</AndroidUseSharedRuntime>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Mono.Android" />
     <Reference Include="mscorlib" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -50,22 +39,26 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="classdiagram.cd" />
-    <Compile Include="Binding\BindingCollection\BindingFactory.cs" />
+    <Compile Include="Binding\BindingCollection\BindableProperty.cs" />
     <Compile Include="Binding\BindingCollection\Binding.cs" />
+    <Compile Include="Binding\BindingCollection\BindingBase.cs" />
+    <Compile Include="Binding\BindingCollection\BindingExpression.cs" />
     <Compile Include="Binding\BindingCollection\BindingInfo.cs" />
-    <Compile Include="Binding\BindingsFactory.cs" />
-    <Compile Include="Binding\Converter\ValueConversionAttribute.cs" />
-    <Compile Include="View\Element\EditViewElement.cs" />
+    <Compile Include="Binding\BindingCollection\BindingMode.cs" />
+    <Compile Include="Binding\BindingCollection\BindingOperations.cs" />
+    <Compile Include="Binding\BindingCollection\DataBindingException.cs" />
+    <Compile Include="Binding\BindingCollection\IBindable.cs" />
+    <Compile Include="Binding\BindingCollection\IBindingExpression.cs" />
     <Compile Include="Binding\Converter\IValueConverter.cs" />
-    <Compile Include="View\Element\Element.cs" />
-    <Compile Include="View\Visitor\IVisitor.cs" />
-    <Compile Include="PageFactory.cs" />
+    <Compile Include="Binding\Converter\ValueConversionAttribute.cs" />
+    <Compile Include="Extensions\TypeExtensions.cs" />
+    <Compile Include="Interfaces\IDataBinder.cs" />
+    <Compile Include="Interfaces\IDataContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="View\Visitor\TextBindingVisitor.cs" />
-    <Compile Include="View\ViewHeirarchyForVisitor.cs" />
+    <Compile Include="ViewModel\IViewModel.cs" />
+    <Compile Include="ViewModel\ViewModel.cs" />
+    <Compile Include="Interfaces\IElement.cs" />
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildExtensionsPath)\Novell\Novell.MonoDroid.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

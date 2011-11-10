@@ -1,7 +1,9 @@
-﻿
+
 Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Android.Mvvm", "Android.MVVM\Android.Mvvm.csproj", "{16850A95-E187-4A62-AF2F-9332A83EC328}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MVVM.Android", "MVVM.Android\MVVM.Android.csproj", "{16850A95-E187-4A62-AF2F-9332A83EC328}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MVVM.Common", "MVVM.Common\MVVM.Common.csproj", "{C58AF451-086E-4137-ACA0-E43505F305A4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -13,6 +15,10 @@ Global
 		{16850A95-E187-4A62-AF2F-9332A83EC328}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{16850A95-E187-4A62-AF2F-9332A83EC328}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{16850A95-E187-4A62-AF2F-9332A83EC328}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C58AF451-086E-4137-ACA0-E43505F305A4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C58AF451-086E-4137-ACA0-E43505F305A4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C58AF451-086E-4137-ACA0-E43505F305A4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C58AF451-086E-4137-ACA0-E43505F305A4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

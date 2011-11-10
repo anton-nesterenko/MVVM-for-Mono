@@ -1,10 +1,10 @@
 ﻿using System;
 
-namespace Ordo.Android.Mvvm.Iteration1.View.Visitor
+namespace Mvvm.Android.View.Visitor
 {
     public class TextBindingVisitor : IVisitor
     {
-        public void Visit(Element.Element element)
+        public void Visit(global::Mvvm.Android.View.Element.Element element)
         {
             throw new NotImplementedException();
         }

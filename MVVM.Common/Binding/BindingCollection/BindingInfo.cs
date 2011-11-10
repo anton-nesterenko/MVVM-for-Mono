@@ -1,6 +1,6 @@
-using Ordo.Android.Mvvm.Iteration1.Binding.Converter;
+using MonoMobile.Views;
 
-namespace Ordo.Android.Mvvm.Iteration1.Binding.BindingCollection
+namespace MVVM.Common.Binding.BindingCollection
 {
     public class BindingInfo
     {

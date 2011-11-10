@@ -1,8 +1,9 @@
 ﻿using System;
+using Mvvm.Android.View.Visitor;
 
-namespace Ordo.Android.Mvvm.Iteration1.View.Element
+namespace Mvvm.Android.View.Element
 {
-    public class EditViewElement : Element
+    public class EditViewElement : global::Mvvm.Android.View.Element.Element
     {
         public override void Accept(IVisitor visitor)
         {

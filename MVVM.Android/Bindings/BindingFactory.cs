@@ -1,10 +1,12 @@
 ﻿using System;
+using MVVM.Common.Binding.BindingCollection;
+using MonoMobile.Views;
 
-namespace Ordo.Android.Mvvm.Iteration1.Binding.BindingCollection
+namespace Mvvm.Android.Bindings
 {
     public class BindingFactory
     {
-        public void Create(ViewModelBase viewModel, String elementId, String property, BindingInfo bindingInfo)
+        public void Create(IViewModel viewModel, String elementId, String property, BindingInfo bindingInfo)
         {
             throw new System.NotImplementedException();
         }

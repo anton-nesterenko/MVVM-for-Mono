@@ -1,19 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Ordo.Android.Mvvm.Iteration1.View;
-using Ordo.Android.Mvvm.Iteration1.View.Element;
+﻿using Mvvm.Android.View.Visitor;
 
-namespace Ordo.Android.Mvvm
+namespace Mvvm.Android.View
 {
     public class ViewHeirarchyForVisitor
     {
-        public void Attach(Element element)
+        public void Attach(Element.Element element)
         {
             throw new System.NotImplementedException();
         }
 
-        public void Detatch(Element element)
+        public void Detatch(Element.Element element)
         {
             throw new System.NotImplementedException();
         }
