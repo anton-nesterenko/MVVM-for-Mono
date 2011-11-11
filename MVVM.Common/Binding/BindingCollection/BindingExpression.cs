@@ -39,6 +39,10 @@ namespace MonoMobile.Views
 	using System.Linq;
 	using System.Reflection;
 
+    /// <summary>
+    /// A bindingExpression is a single instance of a binding. 
+    /// A binding is essentially the information to create an instance (ie a bindingExpression).
+    /// </summary>
     public class BindingExpression : IBindingExpression
 	{
         //struct PendingUpdateKey

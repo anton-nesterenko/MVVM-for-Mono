@@ -1,4 +1,5 @@
-﻿using Mvvm.Android.View;
+﻿using Android.App;
+using Mvvm.Android.View;
 
 namespace Mvvm.Android
 {
@@ -8,6 +9,7 @@ namespace Mvvm.Android
     public class PageFactory
     {
         private readonly ViewBindingParser _viewBindingParser;
+        private Activity _currentPage;
 
         public PageFactory(ViewBindingParser viewBindingParser)
         {
@@ -17,32 +19,39 @@ namespace Mvvm.Android
         /// <summary>
         /// If the bindings for the page being loaded are not already cached, then
         /// 
-        /// 1) convert the xml UI into an element based object model representing the heirachy and binding information of the UI.
-        /// 2) parse the page being loaded by calling the parser and telling it to start. 
+        /// 1) store the page we are on.
+        /// 2) convert the xml UI into an element based object model representing the heirachy and binding information of the UI.
+        /// 3) parse the page being loaded by calling the parser and telling it to start. 
         /// 
         /// The parser will create the binding by calling the PageBindingFactory
         /// </summary>
-        private void Load()
+        private void Load(Activity page)
         {
+            _currentPage = page;
+
             throw new System.NotImplementedException();
         }
 
         /// <summary>
         /// Put the bindings into an inactive state so that they are inactive while sitting in cache.
+        /// 
+        /// 1) If there is no page currently then we can't unload the page. (No exception thrown)
         /// </summary>
         private void Unload()
         {
+            if (_currentPage == null) return;
+
             throw new System.NotImplementedException();
         }
 
         /// <summary>
         /// Move from one page to the next by unloading the bindings on the current page, then loading the new bindings.
         /// </summary>
-        public void TransitionToPage()
+        public void TransitionToPage(Activity page)
         {
             Unload();
 
-            Load();
+            Load(page);
         }
     }
 }
