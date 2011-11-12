@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using MVVM.Common.Binding.BindingCollection;
 using MVVM.Common.View;
 using Mvvm.Android.View.Visitor;
 
@@ -13,10 +14,18 @@ namespace Mvvm.Android.View.Element
     /// <seealso cref="IVisitor"/>
     public abstract class Element : IElement
     {
+        protected Element(string id, IDictionary<String, BindingInfo> properties)
+        {
+            ElementId = id;
+            Properties = properties;
+        }
+
         public abstract void Accept(IVisitor visitor);
 
-        public IDictionary<String, String> Properties { get; set; }
+        public IDictionary<String, BindingInfo> Properties { get; private set; }
 
         public object Cell { get; set; }
+
+        public string ElementId { get; private set; }
     }
 }

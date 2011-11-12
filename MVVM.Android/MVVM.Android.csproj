@@ -50,16 +50,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="classdiagram.cd" />
     <Compile Include="Bindings\BindingFactory.cs" />
     <Compile Include="Bindings\PageBindingFactory.cs" />
+    <Compile Include="View\AxmalParser.cs" />
     <Compile Include="View\Element\EditViewElement.cs" />
     <Compile Include="View\Element\Element.cs" />
+    <Compile Include="View\Node.cs" />
     <Compile Include="View\Visitor\IVisitor.cs" />
     <Compile Include="PageFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="View\Visitor\TextBindingVisitor.cs" />
-    <Compile Include="View\ViewBindingParser.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\MVVM.Common\MVVM.Common.csproj">
