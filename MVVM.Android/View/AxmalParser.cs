@@ -17,7 +17,6 @@ namespace Mvvm.Android.View
         public XmlNode Node { get; set; }
     }
 
-
     public class AxmalParser
     {
         public static Node<Element.Element> Parser(Stream inputStream)
@@ -32,6 +31,9 @@ namespace Mvvm.Android.View
 
 
             Node<Element.Element> firstNode = null;
+			
+			
+			//Breadth first search of axml file
             while (nodes.Count > 0)
             {
 
@@ -57,7 +59,6 @@ namespace Mvvm.Android.View
 				    IDictionary<string, BindingInfo> binding = null;
 				    string id = CreatePropertyBindingInfos(currentNode.Attributes, out binding);
 
-
                     if (currentNode.Name.Equals("EditText"))
                     {
                         node = new ElementNode<Element.Element>() { Value = new EditViewElement(id, binding) };
@@ -67,8 +68,8 @@ namespace Mvvm.Android.View
                     if(collectionNode!= null && node != null)
                     {
                         collectionNode.Collection.Add(node);
+						Android.Util.Log.Info(AndroidConstants.ExecptionLogTag,String.Format("Element Created for '{0}({1}) with {2} bindings'",currentNode.Name, id,binding.Count));
                     }
-                    
 				}
 
                 if(firstNode == null)
@@ -76,7 +77,6 @@ namespace Mvvm.Android.View
                     firstNode = node;
                 }
 			}
-			
             return firstNode;
         }
 
@@ -114,11 +114,8 @@ namespace Mvvm.Android.View
 			Boolean,
 		}
 			
-		
-		
 		private class Binding
 		{
-			
 		    public string Prefix { get; private set; }
 		    public string Name { get; private set; }
 		    public DefaultValueType Type { get; private set; }
@@ -130,7 +127,6 @@ namespace Mvvm.Android.View
 		        Type = type;
 		    }
 		}
-		
 		
 		private static BindingFetcher _instance;
 		public static BindingFetcher Instance
@@ -151,7 +147,7 @@ namespace Mvvm.Android.View
 		
         private Dictionary<string,Binding> _bindings = new Dictionary<string,Binding>();
 		
-        private Regex _kvpRegex = new Regex(@"(?<key>.*)=(?<value>.*)");
+        private Regex _kvpRegex = new Regex(@"(?<key>\w*)\s*=\s*(?<Value>\w*)");
 
        
 
@@ -159,14 +155,18 @@ namespace Mvvm.Android.View
 		{
 			CreateBinding("Android","text", DefaultValueType.String);
 
-
+			
+			Android.Util.Log.Info(AndroidConstants.ExecptionLogTag,"Finding all converters in assemblies");
             // find all Value Converters
             _converters = AppDomain.CurrentDomain.GetAssemblies()
                                                             .SelectMany(ass => ass.GetTypes())
                                                             .Where(t => t.GetInterfaces().Contains(typeof(IValueConverter)))
                                                             .ToDictionary(key => key, value => (IValueConverter)null); // caret one when needed
             
+			Android.Util.Log.Info(string.Format(AndroidConstants.ExecptionLogTag,"Converters found: {0}", _converters.Count));
+			
 		}
+		
 
         public void  CreateBinding(string prefix, string name, DefaultValueType type)
         {
@@ -188,7 +188,6 @@ namespace Mvvm.Android.View
 				IList<String> list = new List<String>();
 				StringBuilder builder = new StringBuilder(@value.Length);
 				
-			
 				foreach (char c in  @value)
 				{
 					if((char.IsWhiteSpace(c) || c == ',') && builder.Length > 0)
@@ -223,9 +222,6 @@ namespace Mvvm.Android.View
                                 con = GetConverter(v);
                                 break;
                         }
-
-                       
-
 					}
 					return new BindingInfo(path,con,attribute.LocalName);	
                 }
@@ -254,7 +250,7 @@ namespace Mvvm.Android.View
 	        }
             else
 	        {
-	            // log...
+				Android.Util.Log.Warn(string.Format(AndroidConstants.ExecptionLogTag,"Converter for Type '{0}' not found", converterName));
 	        }
 
 	    	return null;
