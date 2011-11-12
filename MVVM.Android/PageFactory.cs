@@ -8,13 +8,13 @@ namespace Mvvm.Android
     /// </summary>
     public class PageFactory
     {
-        private readonly ViewBindingParser _viewBindingParser;
+        //private readonly ViewBindingParser _viewBindingParser;
         private Activity _currentPage;
 
-        public PageFactory(ViewBindingParser viewBindingParser)
-        {
-            _viewBindingParser = viewBindingParser;
-        }
+        //public PageFactory(ViewBindingParser viewBindingParser)
+        //{
+          //  _viewBindingParser = viewBindingParser;
+        //}
 
         /// <summary>
         /// If the bindings for the page being loaded are not already cached, then

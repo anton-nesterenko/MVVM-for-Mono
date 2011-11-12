@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -62,6 +62,10 @@
     <ProjectReference Include="..\NUnitLite.MonoDroid\NUnitLite.MonoDroid.csproj">
       <Project>{26327C81-7655-443D-9E04-443AC07BD6CC}</Project>
       <Name>NUnitLite.MonoDroid</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MVVM.Common\MVVM.Common.csproj">
+      <Project>{C58AF451-086E-4137-ACA0-E43505F305A4}</Project>
+      <Name>MVVM.Common</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Novell\Novell.MonoDroid.CSharp.targets" />

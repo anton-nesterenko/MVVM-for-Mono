@@ -9,9 +9,9 @@ namespace Mvvm.Android.Bindings
     /// </summary>
     public class BindingFactory
     {
-        public BindingExpression Create(IViewModel viewModel, String elementId, String property, Binding binding)
+        public BindingExpression Create(IViewModel viewModel, String elementId, String targetProperty, Binding binding)
         {
-            var bindingExpression = new BindingExpression(binding, targetProperty, target);
+            //var bindingExpression = new BindingExpression(binding, targetProperty, target);
 
             //TODO: return new BindingExpression();
             throw new System.NotImplementedException();

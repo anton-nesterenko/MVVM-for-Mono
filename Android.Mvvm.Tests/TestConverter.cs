@@ -10,12 +10,12 @@ using Android.OS;
 using Android.Runtime;
 using Android.Views;
 using Android.Widget;
-using Ordo.Android.Mvvm.Iteration1.Binding.Converter;
+using MonoMobile.Views;
 
 namespace Android.Mvvm.Tests
 {
-    [ValueConversionAttribute(typeof(string),typeof(string))]
-	public class TestValueConverter : IValueConverter 
+    //[ValueConversionAttribute(typeof(string),typeof(string))]
+	public class TestValueConverter : IValueConverter
 	{
 	    #region Implementation of IValueConverter
 
