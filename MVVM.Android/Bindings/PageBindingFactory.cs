@@ -12,7 +12,9 @@ namespace Mvvm.Android.Bindings
     /// </summary>
     public class PageBindingFactory
     {
-        private IDictionary<Activity, Binding> _perPageBindings = new Dictionary<Activity, Binding>();
+
+        private BindingFactory _bindingFactory = new BindingFactory();
+        private IDictionary<Android.Views.View, IList<Binding>> _perPageBindings = new Dictionary<Android.Views.View, IList<Binding>>();
         private IList<BindingExpression> _bindingsForCurrentPage = new List<BindingExpression>(); 
 
         /// <summary>
@@ -22,9 +24,16 @@ namespace Mvvm.Android.Bindings
         /// <param name="elementId"></param>
         /// <param name="property"></param>
         /// <param name="bindingInfo"></param>
-        public void Add(IViewModel viewModel, String elementId, String property, Binding bindingInfo)
+        public void Add(Android.Views.View view , Binding binding)
         {
-            
+            IList<Binding> bindings;
+            if(!_perPageBindings.TryGetValue(view, out bindings))
+            {
+                bindings = new List<Binding>();
+                _perPageBindings[view] = bindings;
+            }
+
+            bindings.Add(binding);
         }
 
         /// <summary>
@@ -34,9 +43,11 @@ namespace Mvvm.Android.Bindings
         /// 2) 
         /// </summary>
         /// <param name="page"></param>
-        public void CreateInstancesForPage(Activity page)
+        public void CreateInstancesForPage(Android.Views.View page, IViewModel viewModel)
         {
-            
+            _bindingsForCurrentPage.Clear();
+
+
         }
     }
 }

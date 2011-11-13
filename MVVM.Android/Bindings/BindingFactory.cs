@@ -8,7 +8,7 @@ using MonoMobile.Views;
 namespace Mvvm.Android.Bindings
 {
     /// <summary>
-    /// Create/Remove a single binding expression from a Binding class whcih has the information
+    /// Create/Remove a single binding expression from a Binding class which has the information
     /// </summary>
     public class BindingFactory
     {
@@ -22,9 +22,7 @@ namespace Mvvm.Android.Bindings
         {
 			var type = viewModel.GetType();
 			
-			
-			
-			/// find property dic
+			// find property dic
             IDictionary<string, MemberInfo> propertyDic;
 			if(!_typeBindingDic.TryGetValue(type, out propertyDic))
 			{
@@ -46,7 +44,7 @@ namespace Mvvm.Android.Bindings
 			return bindingExpression;
         }
 
-        public void Remove()
+        public void Remove()  // remove what? the binding? the BindingExpression? but are we caching the bindingExpression? as there are not cached in the binding class? 
         {
             throw new System.NotImplementedException();
         }

@@ -43,6 +43,7 @@ namespace MonoMobile.Views
 
 		public DataBindingException(string message, Exception innerException) : base(message, innerException) 
 		{
+           
 		}
 
 		protected DataBindingException(SerializationInfo info, StreamingContext context) : base(info, context)

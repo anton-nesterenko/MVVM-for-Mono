@@ -1,4 +1,5 @@
 ﻿using Android.App;
+using Mvvm.Android.Bindings;
 using Mvvm.Android.View;
 
 namespace Mvvm.Android
@@ -8,26 +9,37 @@ namespace Mvvm.Android
     /// </summary>
     public class PageFactory
     {
+        private 
+
+
         //private readonly ViewBindingParser _viewBindingParser;
         private Activity _currentPage;
 
-        //public PageFactory(ViewBindingParser viewBindingParser)
-        //{
-          //  _viewBindingParser = viewBindingParser;
-        //}
+        public PageFactory(ViewBindingParser viewBindingParser)
+        {
+            _viewBindingParser = viewBindingParser;
+        }
 
         /// <summary>
         /// If the bindings for the page being loaded are not already cached, then
         /// 
         /// 1) store the page we are on.
-        /// 2) convert the xml UI into an element based object model representing the heirachy and binding information of the UI.
+        /// 2) convert the xml UI into an element based object model representing the hierarchy and binding information of the UI.
         /// 3) parse the page being loaded by calling the parser and telling it to start. 
         /// 
         /// The parser will create the binding by calling the PageBindingFactory
         /// </summary>
-        private void Load(Activity page)
+        private void Load(Mono.And page)
         {
+
+
             _currentPage = page;
+            page.SetContentView();
+            
+
+
+            // should be a singliton ?
+            new PageBindingFactory().CreateInstancesForPage(page); 
 
             throw new System.NotImplementedException();
         }
