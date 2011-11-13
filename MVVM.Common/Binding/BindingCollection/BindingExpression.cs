@@ -66,6 +66,21 @@ namespace MonoMobile.Views
 
 		public Binding Binding { get; private set; }
 
+		/// <summary>
+		/// Initializes a new instance of the <see cref="MonoMobile.Views.BindingExpression"/> class.
+		/// </summary>
+		/// <param name='binding'>
+		/// Binding.
+		/// </param>
+		/// <param name='targetProperty'>
+		/// ViewModel.<targetProperty>.
+		/// </param>
+		/// <param name='target'>
+		/// ViewModel to hock into.
+		/// </param>
+		/// <exception cref='ArgumentNullException'>
+		/// Is thrown when an argument passed to a method is invalid because it is <see langword="null" /> .
+		/// </exception>
 		public BindingExpression(Binding binding, MemberInfo targetProperty, object target)
 		{
 			if (binding == null)

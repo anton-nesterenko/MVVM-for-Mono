@@ -55,7 +55,7 @@ namespace MonoMobile.Views
 			Source = source;
 			Target = target;
 		}
-
+		// property 
 		public string TargetPath { get; set; }
 		public object Target { get; set;}
 		public string SourcePath { get; set; }
