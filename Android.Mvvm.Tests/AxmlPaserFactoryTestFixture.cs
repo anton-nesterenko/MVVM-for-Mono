@@ -26,14 +26,14 @@ namespace Android.Mvvm.Tests
             var node = ViewBindingParser.Parser(new MemoryStream(ASCIIEncoding.Default.GetBytes("<EditText xmlns:android=\"http://schemas.android.com/apk/res/android\" android:id = \"@+id/BindingText\" android:layout_width = \"fill_parent\" android:layout_height = \"wrap_content\" android:text = \"{Binding Path=hello Converter=TestValueConverter}\"/>")));
 
             Assert.NotNull(node);
-            Assert.True(node is NodeCollection<Element>);
+            Assert.True(node is Node<Element>);
 
-            var nodeCollection = node as NodeCollection<Element>;
+            var nodeCollection = node as Node<Element>;
 
             Assert.True(nodeCollection.Collection.Count == 1);
-            Assert.True(nodeCollection.Collection.First() is ElementNode<Element>);
+            Assert.NotNull(nodeCollection.Collection.First());
 			
-			ElementNode<Element> elementNode = nodeCollection.Collection.First() as ElementNode<Element>;
+			Node<Element> elementNode = nodeCollection.Collection.First();
 			
 			Assert.True(elementNode.Value is EditViewElement);
 			

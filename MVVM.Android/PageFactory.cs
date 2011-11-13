@@ -1,6 +1,7 @@
 ﻿using Android.App;
 using Mvvm.Android.Bindings;
 using Mvvm.Android.View;
+using and = Android.Views;
 
 namespace Mvvm.Android
 {
@@ -9,8 +10,8 @@ namespace Mvvm.Android
     /// </summary>
     public class PageFactory
     {
-        //private readonly ViewBindingParser _viewBindingParser;
-        private Activity _currentPage;
+        private readonly ViewBindingParser _viewBindingParser;
+        private and.View _currentPage;
 
         public PageFactory(ViewBindingParser viewBindingParser)
         {
@@ -26,13 +27,13 @@ namespace Mvvm.Android
         /// 
         /// The parser will create the binding by calling the PageBindingFactory
         /// </summary>
-        private void Load(Android.Views.View page)
+        private void Load(and.View page)
         {
             _currentPage = page;
-            page.SetContentView();
+            
 
             // should be a singliton ?
-            new PageBindingFactory().CreateInstancesForPage(page); 
+            //new PageBindingFactory().CreateInstancesForPage(page); 
 
             throw new System.NotImplementedException();
         }
@@ -56,7 +57,7 @@ namespace Mvvm.Android
         {
             Unload();
 
-            Load(page);
+            //Load(page);
         }
     }
 }

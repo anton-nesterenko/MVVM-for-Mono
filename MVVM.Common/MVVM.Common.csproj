@@ -46,7 +46,6 @@
     <Compile Include="Binding\BindingCollection\Binding.cs" />
     <Compile Include="Binding\BindingCollection\BindingBase.cs" />
     <Compile Include="Binding\BindingCollection\BindingExpression.cs" />
-    <Compile Include="Binding\BindingCollection\BindingInfo.cs" />
     <Compile Include="Binding\BindingCollection\BindingMode.cs" />
     <Compile Include="Binding\BindingCollection\BindingOperations.cs" />
     <Compile Include="Binding\BindingCollection\DataBindingException.cs" />

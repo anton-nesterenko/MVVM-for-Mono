@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using MVVM.Common.Binding.BindingCollection;
 using MonoMobile.Views;
 
 namespace Mvvm.Android.Bindings
