@@ -52,7 +52,7 @@
   <ItemGroup>
     <Compile Include="Bindings\BindingFactory.cs" />
     <Compile Include="Bindings\PageBindingFactory.cs" />
-    <Compile Include="View\AxmalParser.cs" />
+    <Compile Include="View\ViewBindingParser.cs" />
     <Compile Include="View\Element\EditViewElement.cs" />
     <Compile Include="View\Element\Element.cs" />
     <Compile Include="View\Element\UnknownElement.cs" />
