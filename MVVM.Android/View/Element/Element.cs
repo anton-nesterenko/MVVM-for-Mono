@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using MVVM.Common.Binding.BindingCollection;
 using MVVM.Common.View;
+using MonoMobile.Views;
 using Mvvm.Android.View.Visitor;
 
 namespace Mvvm.Android.View.Element
@@ -14,7 +15,7 @@ namespace Mvvm.Android.View.Element
     /// <seealso cref="IVisitor"/>
     public abstract class Element : IElement
     {
-        protected Element(string id, IDictionary<String, BindingInfo> properties)
+        protected Element(string id, IDictionary<String, Binding> properties)
         {
             ElementId = id;
             Properties = properties;
@@ -22,9 +23,14 @@ namespace Mvvm.Android.View.Element
 
         public abstract void Accept(IVisitor visitor);
 
-        public IDictionary<String, BindingInfo> Properties { get; private set; }
+        public IDictionary<String, Binding> Properties { get; private set; }
 
         public object Cell { get; set; }
+
+        public string ControlName
+        {
+            get; set;
+        }
 
         public string ElementId { get; private set; }
     }

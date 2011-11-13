@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Xml;
+using System.Xml.Linq;
 using MVVM.Common.Binding.BindingCollection;
 using MonoMobile.Views;
 using Mvvm.Android.View.Element;
@@ -13,7 +14,7 @@ namespace Mvvm.Android.View
 {
     public class ParentNode
     {
-        public NodeCollection<Element.Element> Parent { get; set; }
+        public Node<Element.Element> Parent { get; set; }
         public XmlNode Node { get; set; }
     }
 
@@ -22,62 +23,56 @@ namespace Mvvm.Android.View
         public static Node<Element.Element> Parser(Stream inputStream)
         {
             inputStream.Position = 0;
-            var doc = new XmlDocument();
-            
-            doc.Load(inputStream);
-			
-			Queue<ParentNode> nodes = new Queue<ParentNode> ();
-            nodes.Enqueue(new ParentNode() {Node = doc});
+            var doc = XDocument.Load(inputStream);
+
+            Node<Element.Element> result = null;
+
+            CrawlNodes(doc.Root, ref result);
+
+            return result;
+        }
+
+        private static void CrawlNodes(XElement element, ref Node<Element.Element> iterator)
+        {
+            iterator = CreateElement(element, iterator);
 
 
-            Node<Element.Element> firstNode = null;
-			
-			
-			//Breadth first search of axml file
-            while (nodes.Count > 0)
+            foreach (var node in element.Elements())
             {
+                CrawlNodes(node, ref iterator);
+            }
+        }
 
-                Node<Element.Element> node = null;
 
 
-				var currentNodeInfo = nodes.Dequeue();
-				var currentNode = currentNodeInfo.Node;
-                
-				if(currentNode.HasChildNodes)
-				{
-                    var collNode = new NodeCollection<Element.Element>();
-                    node =  collNode;
-                    
-                    foreach (var child in currentNode.ChildNodes.Cast<XmlNode>())
-				    {
-                        nodes.Enqueue(new ParentNode() { Parent = collNode, Node = child });
-				    }
-				}
-                else
-				{
-				    
-				    IDictionary<string, BindingInfo> binding = null;
-				    string id = CreatePropertyBindingInfos(currentNode.Attributes, out binding);
+        private static Node<Element.Element> CreateElement(XElement element, Node<Element.Element> parentResultNode)
+        {
+            Node<Element.Element> elementToAdd;
 
-                    if (currentNode.Name.Equals("EditText"))
-                    {
-                        node = new ElementNode<Element.Element>() { Value = new EditViewElement(id, binding) };
-                    } 
-                        
-                    var collectionNode = currentNodeInfo.Parent;
-                    if(collectionNode!= null && node != null)
-                    {
-                        collectionNode.Collection.Add(node);
-						Android.Util.Log.Info(AndroidConstants.ExecptionLogTag,String.Format("Element Created for '{0}({1}) with {2} bindings'",currentNode.Name, id,binding.Count));
-                    }
-				}
+            var id = element.Attribute("id").Value;
+            var properties = element.Attributes()
+                                    .Where(a => a.Name.LocalName != "id")
+                                    .ToDictionary(a => a.Name.LocalName, a => ParseBindingExpression(a.Value));
 
-                if(firstNode == null)
-                {
-                    firstNode = node;
-                }
-			}
-            return firstNode;
+            switch (element.Name.NamespaceName)
+            {
+                case "EditView":
+                    elementToAdd = new Node<Element.Element>() { Value = new EditViewElement(id, properties) };
+                    break;
+
+                default:
+                    elementToAdd = new Node<Element.Element>() { Value = new UnknownElement(id, properties) };
+                    break;
+            }   
+ 
+            parentResultNode.Collection.Add(elementToAdd);
+
+            return parentResultNode.Collection.Last();
+        }
+
+        private static Binding ParseBindingExpression(string value)
+        {
+            throw new NotImplementedException();
         }
 
         private static string CreatePropertyBindingInfos(XmlAttributeCollection attributes, out  IDictionary<string, BindingInfo> bindings)
