@@ -9,7 +9,6 @@ namespace Mvvm.Android
     /// </summary>
     public class PageFactory
     {
-        private 
 
 
         //private readonly ViewBindingParser _viewBindingParser;
@@ -29,7 +28,7 @@ namespace Mvvm.Android
         /// 
         /// The parser will create the binding by calling the PageBindingFactory
         /// </summary>
-        private void Load(Mono.And page)
+        private void Load( page)
         {
 
 
