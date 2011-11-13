@@ -9,8 +9,6 @@ namespace Mvvm.Android
     /// </summary>
     public class PageFactory
     {
-
-
         //private readonly ViewBindingParser _viewBindingParser;
         private Activity _currentPage;
 
@@ -28,14 +26,10 @@ namespace Mvvm.Android
         /// 
         /// The parser will create the binding by calling the PageBindingFactory
         /// </summary>
-        private void Load( page)
+        private void Load(Android.Views.View page)
         {
-
-
             _currentPage = page;
             page.SetContentView();
-            
-
 
             // should be a singliton ?
             new PageBindingFactory().CreateInstancesForPage(page); 

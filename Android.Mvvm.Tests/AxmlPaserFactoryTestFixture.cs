@@ -23,7 +23,7 @@ namespace Android.Mvvm.Tests
         public void  EditTextElementTest()
         {
 			 
-            var node = AxmlParser.Parser(new MemoryStream(ASCIIEncoding.Default.GetBytes("<EditText xmlns:android=\"http://schemas.android.com/apk/res/android\" android:id = \"@+id/BindingText\" android:layout_width = \"fill_parent\" android:layout_height = \"wrap_content\" android:text = \"{Binding Path=hello Converter=TestValueConverter}\"/>")));
+            var node = ViewBindingParser.Parser(new MemoryStream(ASCIIEncoding.Default.GetBytes("<EditText xmlns:android=\"http://schemas.android.com/apk/res/android\" android:id = \"@+id/BindingText\" android:layout_width = \"fill_parent\" android:layout_height = \"wrap_content\" android:text = \"{Binding Path=hello Converter=TestValueConverter}\"/>")));
 
             Assert.NotNull(node);
             Assert.True(node is NodeCollection<Element>);
