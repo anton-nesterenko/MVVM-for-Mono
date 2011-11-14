@@ -51,14 +51,14 @@ namespace Mvvm.Android.View
 
 
 
-            var id = element.Attribute(XName.Get("id",AndroidConstants.AndroidBindingNamespace)).Value;
+            var id = element.Attribute(XName.Get(Mvvm.Android.BindingConstants.IdString, AndroidConstants.AndroidBindingNamespace)).Value;
             var properties = element.Attributes()
-                                    .Where(a => a.Name.LocalName != "id" && HasBindingExpression(a.Value))
+                                    .Where(a => !a.Name.LocalName.Equals(Mvvm.Android.BindingConstants.IdString) && HasBindingExpression(a.Value))
                                     .ToDictionary(a => a.Name.LocalName, a => ParseBindingExpression(a.Value));
 
             switch (element.Name.LocalName)
             {
-                case "EdiText":
+			case AndroidConstants.Views.EditTextString:
                     elementToAdd = new Node<Element.Element>() { Value = new EditViewElement(id, properties) };
                     break;
 
@@ -78,12 +78,12 @@ namespace Mvvm.Android.View
 
         private static bool HasBindingExpression(string value)
         {
-            return value.StartsWith("{Binding ") && value.EndsWith("}"); // we only want to pass the attributes that have our binding syntax in it.
+            return value.StartsWith("{Binding") && value.EndsWith("}"); // we only want to pass the attributes that have our binding syntax in it.
         }
 
         private static Binding ParseBindingExpression(string value)
         {
-            return BindingFetcher.Instance.GetBinding(value.Substring(9,value.Length -10));
+            return BindingFetcher.Instance.GetBinding(value.Substring(8, value.Length - 9));
         }
     }
 	
@@ -127,15 +127,6 @@ namespace Mvvm.Android.View
 			
 		}
 		
-
-       
-
-	    private string CreateKey(string prefix, string name)
-	    {
-	        return string.Format("{0}^{1}", prefix, name).ToLower();
-	    }
-
-
         public Binding GetBinding(string attValue)
         {
             IList<String> list = new List<String>();
@@ -155,11 +146,12 @@ namespace Mvvm.Android.View
                 list.Add(builder.ToString());
                 builder.Clear();
             }
+			
+			IValueConverter con = null;
+            string path = ".";
+			
             if (list.Count > 0)
             {
-                IValueConverter con = null;
-                string path = ".";
-
                 foreach (var kvp in list)
                 {
                     var match = _kvpRegex.Match(kvp);
@@ -168,17 +160,16 @@ namespace Mvvm.Android.View
 
                     switch (k)
                     {
-                        case "Path":
+                        case BindingConstants.PathString:
                             path = v;
                             break;
-                        case "Converter":
+                        case BindingConstants.ConverterString:
                             con = GetConverter(v);
                             break;
                     }
                 }
-                return new Binding(path) {Converter = con};
             }
-            return null;
+            return new Binding(path) {Converter = con};
         }
 
 	    private IValueConverter GetConverter(string converterName)

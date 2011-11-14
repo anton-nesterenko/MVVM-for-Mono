@@ -23,6 +23,8 @@
 
 using System;
 using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using NUnit.Framework;
 
@@ -39,7 +41,7 @@ namespace NUnitLite
 
         private IDictionary properties = new Hashtable();
 
-        private ArrayList tests = new ArrayList(10);
+        private IList<ITest> tests = new List<ITest>(10);
         #endregion
 
         #region Constructors
@@ -50,13 +52,20 @@ namespace NUnitLite
 
         public TestSuite(Type type)
         {
+
+            TestObject = Reflect.Construct(type, null);
+
             this.name = type.Name;
             this.fullName = type.FullName;
 
             object[] attrs = type.GetCustomAttributes( typeof(PropertyAttribute), true);
             foreach (PropertyAttribute attr in attrs)
+            {
                 foreach( DictionaryEntry entry in attr.Properties )
+                {
                     this.Properties[entry.Key] = entry.Value;
+                }
+            }
 
             IgnoreAttribute ignore = (IgnoreAttribute)Reflect.GetAttribute(type, typeof(IgnoreAttribute));
             if (ignore != null)
@@ -70,18 +79,25 @@ namespace NUnitLite
                 foreach (MethodInfo method in type.GetMethods())
                 {
                     if (TestCase.IsTestMethod(method))
-                        this.AddTest(new TestCase(method));
-                    //{
-                    //    ITest test = TestCase.HasValidSignature(method)
-                    //        ? (ITest)new TestCase(method)
-                    //        : (ITest)new InvalidTestCase(method.Name,
-                    //            "Test methods must have signature void MethodName()");
+                    {
+                        this.AddTest(new TestCase(method, TestObject));
+                    }
+                    else if (IsTestFixtureSetup(method))
+                    {
+                        TestFixtureSetUpMethod = method;
 
-                    //    this.AddTest(test);
-                    //}
+                    }else if (IsTestFixtureTearDownAttribute(method))
+                    {
+                        TestFixtureTearDownMethod = method;
+                    }
                 }
             }
+
+
         }
+
+       
+
         #endregion
 
         #region Properties
@@ -114,14 +130,11 @@ namespace NUnitLite
         {
             get
             {
-                int count = 0;
-                foreach (ITest test in this.tests)
-                    count += test.TestCaseCount;
-                return count;
+                return this.tests.Sum(test => test.TestCaseCount);
             }
         }
 
-        public IList Tests
+        public IList<ITest> Tests
         {
             get { return tests; }
         }
@@ -150,6 +163,10 @@ namespace NUnitLite
                     break;
 
                 case RunState.Runnable:
+                    if(TestFixtureSetUpMethod != null)
+                    {
+                        NUnitLite.Reflect.InvokeMethod(TestFixtureSetUpMethod, TestObject);
+                    }
                     foreach (ITest test in tests)
                     {
                         ++count;
@@ -167,13 +184,22 @@ namespace NUnitLite
                                 break;
                         }
                     }
-
+                    if (TestFixtureTearDownMethod != null)
+                    {
+                        NUnitLite.Reflect.InvokeMethod(TestFixtureTearDownMethod, TestObject);
+                    }
                     if (count == 0)
+                    {
                         result.NotRun("Class has no tests");
+                    }
                     else if (errors > 0 || failures > 0)
+                    {
                         result.Failure("One or more component tests failed");
+                    }
                     else
+                    {
                         result.Success();
+                    }
                     break;
             }
 
@@ -199,6 +225,21 @@ namespace NUnitLite
 
             return false;
         }
+
+        private bool IsTestFixtureSetup(MethodInfo method)
+        {
+            return Reflect.HasAttribute(method, typeof(TestFixtureSetUpAttribute));
+        }
+
+        private bool IsTestFixtureTearDownAttribute(MethodInfo method)
+        {
+            return Reflect.HasAttribute(method, typeof(TestFixtureSetUpAttribute));
+        }
+
         #endregion
+
+        private MethodInfo TestFixtureSetUpMethod { get; set; }
+        private MethodInfo TestFixtureTearDownMethod { get; set; }
+        private Object TestObject { get; set; }
     }
 }

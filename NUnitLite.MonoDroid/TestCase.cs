@@ -57,6 +57,11 @@ namespace NUnitLite
             Initialize(method, null);
         }
 
+        public TestCase(MethodInfo method, object fixture)
+        {
+            Initialize(method, fixture);
+        }
+
         public TestCase(string name, object fixture)
         {
             Initialize(fixture.GetType().GetMethod(name), fixture);
