@@ -42,10 +42,5 @@ namespace Mvvm.Android.Bindings
 			
 			return bindingExpression;
         }
-
-        public void Remove()  // remove what? the binding? the BindingExpression? but are we caching the bindingExpression? as there are not cached in the binding class? 
-        {
-            throw new System.NotImplementedException();
-        }
     }
 }

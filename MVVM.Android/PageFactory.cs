@@ -30,10 +30,12 @@ namespace Mvvm.Android
         private void Load(and.View page)
         {
             _currentPage = page;
-            
 
-            // should be a singliton ?
-            //new PageBindingFactory().CreateInstancesForPage(page); 
+            //1) get the node tree from the UI markup.
+            ViewBindingParser.Parser();
+
+            //2) get the visitors to visit the node tree.
+
 
             throw new System.NotImplementedException();
         }

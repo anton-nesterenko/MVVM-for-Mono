@@ -42,14 +42,17 @@ namespace Mvvm.Android.Bindings
         /// The page that we want to create instances for.
         /// 
         /// 1) freeze or GC old binding instances for the current and soon to be previous page.
-        /// 2) 
+        /// 2) generate and cache all of our new bindings
         /// </summary>
         /// <param name="page"></param>
-        public void CreateInstancesForPage(and.View page, IViewModel viewModel)
+        public void CreateInstancesForPage(and.View page)
         {
             _bindingsForCurrentPage.Clear();
 
-
+            foreach (var binding in _perPageBindings[page])
+            {
+                Add(page, binding);
+            }
         }
     }
 }
