@@ -6,9 +6,9 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Xml;
 using System.Xml.Linq;
-using MVVM.Common.Binding.BindingCollection;
 using MonoMobile.Views;
 using Mvvm.Android.View.Element;
+using andUtil = Android.Util;
 
 namespace Mvvm.Android.View
 {
@@ -43,18 +43,22 @@ namespace Mvvm.Android.View
             }
         }
 
+
+
         private static Node<Element.Element> CreateElement(XElement element, Node<Element.Element> parentResultNode)
         {
             Node<Element.Element> elementToAdd;
 
-            var id = element.Attribute("id").Value;
+
+
+            var id = element.Attribute(XName.Get(Mvvm.Android.BindingConstants.IdString, AndroidConstants.AndroidBindingNamespace)).Value;
             var properties = element.Attributes()
-                                    .Where(a => a.Name.LocalName != "id")
+                                    .Where(a => !a.Name.LocalName.Equals(Mvvm.Android.BindingConstants.IdString) && HasBindingExpression(a.Value))
                                     .ToDictionary(a => a.Name.LocalName, a => ParseBindingExpression(a.Value));
 
-            switch (element.Name.NamespaceName)
+            switch (element.Name.LocalName)
             {
-                case "EditView":
+			case AndroidConstants.Views.EditTextString:
                     elementToAdd = new Node<Element.Element>() { Value = new EditViewElement(id, properties) };
                     break;
 
@@ -62,64 +66,29 @@ namespace Mvvm.Android.View
                     elementToAdd = new Node<Element.Element>() { Value = new UnknownElement(id, properties) };
                     break;
             }   
- 
-            parentResultNode.Collection.Add(elementToAdd);
+ 			if(parentResultNode != null)
+			{
+				parentResultNode.Collection.Add(elementToAdd);
+			}
+			
+            
 
-            return parentResultNode.Collection.Last();
+            return elementToAdd;
+        }
+
+        private static bool HasBindingExpression(string value)
+        {
+            return value.StartsWith("{Binding") && value.EndsWith("}"); // we only want to pass the attributes that have our binding syntax in it.
         }
 
         private static Binding ParseBindingExpression(string value)
         {
-            throw new NotImplementedException();
-        }
-
-        private static string CreatePropertyBindingInfos(XmlAttributeCollection attributes, out  IDictionary<string, BindingInfo> bindings)
-        {
-            bindings = new Dictionary<string, BindingInfo>();
-            string Id = null;
-            if (attributes != null && attributes.Count > 0)
-            {
-                foreach (var att in attributes.Cast<XmlAttribute>())
-                {
-					if(Id == null && att.LocalName.Equals("id"))
-					{
-					 	Id = att.Value;
-					}
-					else
-					{
-					    BindingInfo bi = BindingFetcher.Instance.GetBinding(att);
-						if(bi!= null)
-						{
-							bindings[bi.ViewProperty] = bi;
-						}
-					}
-                }
-            }
-			return Id;
+            return BindingFetcher.Instance.GetBinding(value.Substring(8, value.Length - 9));
         }
     }
 	
 	public class BindingFetcher
 	{
-		public enum DefaultValueType 
-		{
-			String, 
-			Boolean,
-		}
-			
-		private class Binding
-		{
-		    public string Prefix { get; private set; }
-		    public string Name { get; private set; }
-		    public DefaultValueType Type { get; private set; }
-
-		    public Binding(string prefix, string name, DefaultValueType type)
-		    {
-		        Prefix = prefix;
-		        Name = name;
-		        Type = type;
-		    }
-		}
 		
 		private static BindingFetcher _instance;
 		public static BindingFetcher Instance
@@ -146,81 +115,62 @@ namespace Mvvm.Android.View
 
 		private BindingFetcher()
 		{
-			CreateBinding("Android","text", DefaultValueType.String);
-
 			
-			Android.Util.Log.Info(AndroidConstants.ExecptionLogTag,"Finding all converters in assemblies");
+			andUtil.Log.Info(AndroidConstants.ExecptionLogTag,"Finding all converters in assemblies");
             // find all Value Converters
             _converters = AppDomain.CurrentDomain.GetAssemblies()
                                                             .SelectMany(ass => ass.GetTypes())
                                                             .Where(t => t.GetInterfaces().Contains(typeof(IValueConverter)))
                                                             .ToDictionary(key => key, value => (IValueConverter)null); // caret one when needed
             
-			Android.Util.Log.Info(string.Format(AndroidConstants.ExecptionLogTag,"Converters found: {0}", _converters.Count));
+			andUtil.Log.Info(AndroidConstants.ExecptionLogTag,string.Format(AndroidConstants.ExecptionLogTag,"Converters found: {0}", _converters.Count));
 			
 		}
 		
-
-        public void  CreateBinding(string prefix, string name, DefaultValueType type)
+        public Binding GetBinding(string attValue)
         {
-            _bindings[CreateKey(prefix,name)] = new Binding(prefix,name,type);
-        }
+            IList<String> list = new List<String>();
+            StringBuilder builder = new StringBuilder(attValue.Length);
 
-	    private string CreateKey(string prefix, string name)
-	    {
-	        return string.Format("{0}^{1}", prefix, name).ToLower();
-	    }
-
-
-	    public BindingInfo GetBinding(XmlAttribute attribute)
-		{
-            if (!string.IsNullOrEmpty(attribute.Value) && attribute.Value.StartsWith("{Binding ") && attribute.Value.EndsWith("}"))
+            foreach (char c in attValue)
             {
-				var @value =  attribute.Value.Substring(9, attribute.Value.Length - 10);
-				
-				IList<String> list = new List<String>();
-				StringBuilder builder = new StringBuilder(@value.Length);
-				
-				foreach (char c in  @value)
-				{
-					if((char.IsWhiteSpace(c) || c == ',') && builder.Length > 0)
-					{
-						list.Add(builder.ToString());
-						builder.Clear();
-					}
-					builder.Append(c);
-				}
-				if(builder.Length > 0)
-				{
-					list.Add(builder.ToString());
-					builder.Clear();
-				}
-				if(list.Count > 0)
-				{
-					IValueConverter con = null;
-					string path = "."; 
-					
-	                foreach (var kvp in list)
-	                {
-	                    var match = _kvpRegex.Match(kvp);
-						var k =  match.Groups["key"].Value.Trim();
-                        var v = match.Groups["value"].Value.Trim();
-						
-                        switch (k)
-                        {
-                            case "Path":
-                                path = v;
-                                break;
-                            case "Converter":
-                                con = GetConverter(v);
-                                break;
-                        }
-					}
-					return new BindingInfo(path,con,attribute.LocalName);	
+                if ((char.IsWhiteSpace(c) || c == ',') && builder.Length > 0)
+                {
+                    list.Add(builder.ToString());
+                    builder.Clear();
                 }
-			}
-			return null;
-		}
+                builder.Append(c);
+            }
+            if (builder.Length > 0)
+            {
+                list.Add(builder.ToString());
+                builder.Clear();
+            }
+			
+			IValueConverter con = null;
+            string path = ".";
+			
+            if (list.Count > 0)
+            {
+                foreach (var kvp in list)
+                {
+                    var match = _kvpRegex.Match(kvp);
+                    var k = match.Groups["key"].Value.Trim();
+                    var v = match.Groups["value"].Value.Trim();
+
+                    switch (k)
+                    {
+                        case BindingConstants.PathString:
+                            path = v;
+                            break;
+                        case BindingConstants.ConverterString:
+                            con = GetConverter(v);
+                            break;
+                    }
+                }
+            }
+            return new Binding(path) {Converter = con};
+        }
 
 	    private IValueConverter GetConverter(string converterName)
 	    {
@@ -243,7 +193,7 @@ namespace Mvvm.Android.View
 	        }
             else
 	        {
-				Android.Util.Log.Warn(string.Format(AndroidConstants.ExecptionLogTag,"Converter for Type '{0}' not found", converterName));
+				andUtil.Log.Warn(AndroidConstants.ExecptionLogTag,string.Format("Converter for Type '{0}' not found", converterName));
 	        }
 
 	    	return null;

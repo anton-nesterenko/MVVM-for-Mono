@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using MVVM.Common.Binding.BindingCollection;
 using MonoMobile.Views;
 using Mvvm.Android.View.Visitor;
 

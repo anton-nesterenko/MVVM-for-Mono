@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using Android.App;
 using MonoMobile.Views;
+using and = Android.Views;
+	
 
 namespace Mvvm.Android.Bindings
 {
@@ -14,7 +16,7 @@ namespace Mvvm.Android.Bindings
     {
 
         private BindingFactory _bindingFactory = new BindingFactory();
-        private IDictionary<Android.Views.View, IList<Binding>> _perPageBindings = new Dictionary<Android.Views.View, IList<Binding>>();
+        private IDictionary<and.View, IList<Binding>> _perPageBindings = new Dictionary<and.View, IList<Binding>>();
         private IList<BindingExpression> _bindingsForCurrentPage = new List<BindingExpression>(); 
 
         /// <summary>
@@ -24,7 +26,7 @@ namespace Mvvm.Android.Bindings
         /// <param name="elementId"></param>
         /// <param name="property"></param>
         /// <param name="bindingInfo"></param>
-        public void Add(Android.Views.View view , Binding binding)
+        public void Add(and.View view , Binding binding)
         {
             IList<Binding> bindings;
             if(!_perPageBindings.TryGetValue(view, out bindings))
@@ -43,7 +45,7 @@ namespace Mvvm.Android.Bindings
         /// 2) 
         /// </summary>
         /// <param name="page"></param>
-        public void CreateInstancesForPage(Android.Views.View page, IViewModel viewModel)
+        public void CreateInstancesForPage(and.View page, IViewModel viewModel)
         {
             _bindingsForCurrentPage.Clear();
 

@@ -9,7 +9,6 @@ using Android.OS;
 using Android.Runtime;
 using Android.Views;
 using Android.Widget;
-using MVVM.Common.Binding.BindingCollection;
 using MonoMobile.Views;
 using Mvvm.Android.View.Visitor;
 
