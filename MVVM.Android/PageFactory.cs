@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using Android.App;
 using MonoMobile.Views;
@@ -24,15 +25,14 @@ namespace Mvvm.Android
         {
             _viewBindingParser = viewBindingParser;
             _tokenWalker = tokenWalker;
-
-
-
             _visitors = typeof(IVisitor).GetSubclassesOf(true).Select(GetInstance).ToList();
         }
 
         private IVisitor GetInstance(Type type)
         {
-            
+            //TODO: use dependency injection to get instances.
+
+            throw new NotImplementedException();
         }
 
         /// <summary>
@@ -44,17 +44,13 @@ namespace Mvvm.Android
         /// 
         /// The parser will create the binding by calling the PageBindingFactory
         /// </summary>
-        private void Load(and.View page)
+        private void Load(MemoryStream page)
         {
-            _currentPage = page;
-
             //1) get the node tree from the UI markup.
-            var nodes = ViewTokenizer.Parser(inputStream);
+            var nodes = ViewTokenizer.Parser(page);
 
             //2) get the visitors to visit the node tree.
             _tokenWalker.Walk(nodes, _visitors);
-
-            throw new System.NotImplementedException();
         }
 
         /// <summary>
@@ -72,11 +68,11 @@ namespace Mvvm.Android
         /// <summary>
         /// Move from one page to the next by unloading the bindings on the current page, then loading the new bindings.
         /// </summary>
-        public void TransitionToPage(Activity page)
+        public void TransitionToPage(MemoryStream page)
         {
             Unload();
 
-            //Load(page);
+            Load(page);
         }
     }
 }
