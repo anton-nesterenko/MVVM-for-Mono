@@ -1,6 +1,11 @@
-﻿using Android.App;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using Android.App;
+using MonoMobile.Views;
 using Mvvm.Android.Bindings;
 using Mvvm.Android.View;
+using Mvvm.Android.View.Visitor;
 using and = Android.Views;
 
 namespace Mvvm.Android
@@ -10,12 +15,24 @@ namespace Mvvm.Android
     /// </summary>
     public class PageFactory
     {
-        private readonly ViewBindingParser _viewBindingParser;
+        private readonly ViewTokenizer _viewBindingParser;
+        private readonly TokenWalker _tokenWalker;
         private and.View _currentPage;
+        private readonly ICollection<IVisitor> _visitors;
 
-        public PageFactory(ViewBindingParser viewBindingParser)
+        public PageFactory(ViewTokenizer viewBindingParser, TokenWalker tokenWalker)
         {
             _viewBindingParser = viewBindingParser;
+            _tokenWalker = tokenWalker;
+
+
+
+            _visitors = typeof(IVisitor).GetSubclassesOf(true).Select(GetInstance).ToList();
+        }
+
+        private IVisitor GetInstance(Type type)
+        {
+            
         }
 
         /// <summary>
@@ -32,10 +49,10 @@ namespace Mvvm.Android
             _currentPage = page;
 
             //1) get the node tree from the UI markup.
-            ViewBindingParser.Parser();
+            var nodes = ViewTokenizer.Parser(inputStream);
 
             //2) get the visitors to visit the node tree.
-
+            _tokenWalker.Walk(nodes, _visitors);
 
             throw new System.NotImplementedException();
         }

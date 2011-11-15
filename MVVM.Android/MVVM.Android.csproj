@@ -53,15 +53,17 @@
     <Compile Include="BindingConstants.cs" />
     <Compile Include="Bindings\BindingFactory.cs" />
     <Compile Include="Bindings\PageBindingFactory.cs" />
-    <Compile Include="View\ViewBindingParser.cs" />
+    <Compile Include="View\Parsing\BindingParser.cs" />
+    <Compile Include="View\ViewTokenizer.cs" />
     <Compile Include="View\Element\EditViewElement.cs" />
     <Compile Include="View\Element\Element.cs" />
     <Compile Include="View\Element\UnknownElement.cs" />
-    <Compile Include="View\Node.cs" />
+    <Compile Include="View\Model\Node.cs" />
     <Compile Include="View\Visitor\IVisitor.cs" />
     <Compile Include="PageFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="View\Visitor\TextBindingVisitor.cs" />
+    <Compile Include="View\Visitor\TokenWalker.cs" />
+    <Compile Include="View\Visitor\Visitors\TextBindingVisitor.cs" />
     <Compile Include="AndroidConstants.cs" />
   </ItemGroup>
   <ItemGroup>

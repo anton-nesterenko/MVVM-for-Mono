@@ -24,7 +24,7 @@ namespace Android.Mvvm.Tests
 		private static Node<Element> _node;
 
 
-	    private Establish context = () => _node = ViewBindingParser.Parser(new MemoryStream(ASCIIEncoding.Default.GetBytes("<EditText xmlns:android=\"http://schemas.android.com/apk/res/android\" android:id = \"@+id/BindingText\" android:layout_width = \"fill_parent\" android:layout_height = \"wrap_content\" android:text = \"{Binding}\"/>")));
+	    private Establish context = () => _node = ViewTokenizer.Parser(new MemoryStream(ASCIIEncoding.Default.GetBytes("<EditText xmlns:android=\"http://schemas.android.com/apk/res/android\" android:id = \"@+id/BindingText\" android:layout_width = \"fill_parent\" android:layout_height = \"wrap_content\" android:text = \"{Binding}\"/>")));
 	                                    
 
 	    private Beacuse of = () => { };
