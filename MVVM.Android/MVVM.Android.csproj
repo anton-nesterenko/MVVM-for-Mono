@@ -53,10 +53,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AndroidModule.cs" />
     <Compile Include="Constants\BindingConstants.cs" />
     <Compile Include="Bindings\BindingFactory.cs" />
     <Compile Include="Bindings\PageBindingFactory.cs" />
-    <Compile Include="Init.cs" />
+    <Compile Include="Core.cs" />
     <Compile Include="View\Parsing\BindingParser.cs" />
     <Compile Include="View\Parsing\ViewTokenizer.cs" />
     <Compile Include="View\Element\EditViewElement.cs" />
