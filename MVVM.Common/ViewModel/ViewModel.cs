@@ -29,6 +29,7 @@
 //
 
 using System.ComponentModel;
+using MVVM.Common.ViewModel;
 
 namespace MonoMobile.Views
 {
@@ -37,7 +38,13 @@ namespace MonoMobile.Views
 	//[Preserve(AllMembers = true)]
 	public abstract class ViewModel: IViewModel
 	{
-	    public event PropertyChangedEventHandler PropertyChanged;
+	    event PropertyChangedEventHandler PropertyChanged;
+
+	    protected void OnPropertyChanged(PropertyChangedEventArgs e)
+	    {
+	        PropertyChangedEventHandler handler = PropertyChanged;
+	        if (handler != null) handler(this, e);
+	    }
 	}
 }
 
