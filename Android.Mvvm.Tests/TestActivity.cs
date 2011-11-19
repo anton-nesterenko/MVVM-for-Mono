@@ -2,12 +2,12 @@
 using System.IO;
 using Android.App;
 using Android.Graphics;
-using Android.Mvvm.Tests;
 using Android.Widget;
 using Android.OS;
+using NUnitLite.MonoDroid.Example;
 using NUnitLite.Runner;
 
-namespace NUnitLite.MonoDroid.Example
+namespace Android.Mvvm.Tests
 {
     [Activity(Label = "NUnitLite.MonoDroid.Example", MainLauncher = true, Icon = "@drawable/icon")]
     public class MainActivity : Activity

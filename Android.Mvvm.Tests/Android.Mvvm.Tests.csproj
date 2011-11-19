@@ -47,7 +47,7 @@
     <Reference Include="Mono.Android" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="EditViewElementTestFixture.cs" />
+    <Compile Include="TestFixture\EditViewElementTestFixture.cs" />
     <Compile Include="TestActivity.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Resources\Resource.designer.cs" />
