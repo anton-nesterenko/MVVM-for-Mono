@@ -29,7 +29,7 @@ namespace Mvvm.Android.View
 
         private Dictionary<string, Binding> _bindings = new Dictionary<string, Binding>();
 
-        private Regex _kvpRegex = new Regex(@"(?<key>\w*)\s*=\s*(?<Value>\w*)");
+        private Regex _kvpRegex = new Regex(@"\s*(?<Key>\w*)=(?<Value>\w*)\s*");
 
 
 
@@ -75,8 +75,8 @@ namespace Mvvm.Android.View
                 foreach (var kvp in list)
                 {
                     var match = _kvpRegex.Match(kvp);
-                    var k = match.Groups["key"].Value.Trim();
-                    var v = match.Groups["value"].Value.Trim();
+                    var k = match.Groups["Key"].Value.Trim();
+                    var v = match.Groups["Value"].Value.Trim();
 
                     switch (k)
                     {
@@ -86,6 +86,12 @@ namespace Mvvm.Android.View
                         case BindingConstants.ConverterString:
                             con = GetConverter(v);
                             break;
+						default:
+							if(list.Count == 1)
+							{
+								path = kvp.Trim();
+							}
+							break;
                     }
                 }
             }

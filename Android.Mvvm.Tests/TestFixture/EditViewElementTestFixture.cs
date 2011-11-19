@@ -17,9 +17,9 @@ namespace Android.Mvvm.Tests.TestFixture
 
 
 	    private Establish context = () => axml = "<EditText xmlns:android=\"http://schemas.android.com/apk/res/android\" android:id = \"@+id/BindingText\" android:layout_width = \"fill_parent\" android:layout_height = \"wrap_content\" android:text = \"{Binding}\"/>";
-	                                    
 
-	    private Beacuse of = () => _node = ViewBindingParser.Parser(new MemoryStream(ASCIIEncoding.Default.GetBytes(axml)));
+
+        private Beacuse of = () => _node = ViewTokenizer.Parser(new MemoryStream(ASCIIEncoding.Default.GetBytes(axml)));
 
 	    [Test]
         public void It_should_not_Be_Null()
@@ -76,8 +76,10 @@ namespace Android.Mvvm.Tests.TestFixture
 		
 
         private Establish context = () => axml = "<EditText xmlns:android=\"http://schemas.android.com/apk/res/android\" android:id = \"@+id/BindingText\" android:layout_width = \"fill_parent\" android:layout_height = \"wrap_content\" android:text = \"{Binding TestPath}\"/>";
-		
-        private Beacuse of = () => _node = ViewBindingParser.Parser(new MemoryStream(ASCIIEncoding.Default.GetBytes(axml)));
+
+        private Beacuse of = () => {
+			_node = ViewTokenizer.Parser(new MemoryStream(ASCIIEncoding.Default.GetBytes(axml)));
+		};
 
         [Test]
         public void It_should_not_Be_Null()
@@ -136,7 +138,10 @@ namespace Android.Mvvm.Tests.TestFixture
 
         private Establish context = () => axml = "<EditText xmlns:android=\"http://schemas.android.com/apk/res/android\" android:id = \"@+id/BindingText\" android:layout_width = \"fill_parent\" android:layout_height = \"wrap_content\" android:text = \"{Binding Path=TestPath}\"/>";
 
-        private Beacuse of = () => _node = ViewBindingParser.Parser(new MemoryStream(ASCIIEncoding.Default.GetBytes(axml)));
+        private Beacuse of = () => 
+		{
+			_node = ViewTokenizer.Parser(new MemoryStream(ASCIIEncoding.Default.GetBytes(axml)));
+		};
 
         [Test]
         public void It_should_not_Be_Null()
@@ -195,7 +200,9 @@ namespace Android.Mvvm.Tests.TestFixture
 
         private Establish context = () => axml = "<EditText xmlns:android=\"http://schemas.android.com/apk/res/android\" android:id = \"@+id/BindingText\" android:layout_width = \"fill_parent\" android:layout_height = \"wrap_content\" android:text = \"{Binding Path = TestPath}\"/>";
 
-        private Beacuse of = () => _node = ViewBindingParser.Parser(new MemoryStream(ASCIIEncoding.Default.GetBytes(axml)));
+        private Beacuse of = () => {
+			_node = ViewTokenizer.Parser(new MemoryStream(ASCIIEncoding.Default.GetBytes(axml)));
+		};
 
         [Test]
         public void It_should_not_Be_Null()

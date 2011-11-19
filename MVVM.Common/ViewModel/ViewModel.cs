@@ -38,7 +38,7 @@ namespace MonoMobile.Views
 	//[Preserve(AllMembers = true)]
 	public abstract class ViewModel: IViewModel
 	{
-	    event PropertyChangedEventHandler PropertyChanged;
+	    public event PropertyChangedEventHandler PropertyChanged;
 
 	    protected void OnPropertyChanged(PropertyChangedEventArgs e)
 	    {
