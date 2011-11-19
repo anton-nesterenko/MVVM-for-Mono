@@ -32,7 +32,7 @@ namespace Mvvm.Android
             _currentPage = page;
 
             //1) get the node tree from the UI markup.
-            ViewBindingParser.Parser();
+            //ViewBindingParser.Parser();
 
             //2) get the visitors to visit the node tree.
 

@@ -109,7 +109,7 @@ namespace Mvvm.Android.View
 		
         private Dictionary<string,Binding> _bindings = new Dictionary<string,Binding>();
 		
-        private Regex _kvpRegex = new Regex(@"(?<key>\w*)\s*=\s*(?<Value>\w*)");
+        private Regex _kvpRegex = new Regex(@"(?<key>\w*)=(?<Value>\w*)");
 
        
 
@@ -131,7 +131,7 @@ namespace Mvvm.Android.View
         {
             IList<String> list = new List<String>();
             StringBuilder builder = new StringBuilder(attValue.Length);
-
+			
             foreach (char c in attValue)
             {
                 if ((char.IsWhiteSpace(c) || c == ',') && builder.Length > 0)
@@ -166,9 +166,13 @@ namespace Mvvm.Android.View
                         case BindingConstants.ConverterString:
                             con = GetConverter(v);
                             break;
+						default:
+							path = kvp.Trim();
+						break;
                     }
                 }
             }
+			
             return new Binding(path) {Converter = con};
         }
 
