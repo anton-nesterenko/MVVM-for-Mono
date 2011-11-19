@@ -44,25 +44,32 @@
   <ItemGroup>
     <Reference Include="Mono.Android" />
     <Reference Include="mscorlib" />
+    <Reference Include="Ninject">
+      <HintPath>Libs\Ninject\Ninject.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BindingConstants.cs" />
+    <Compile Include="AndroidModule.cs" />
+    <Compile Include="Constants\BindingConstants.cs" />
     <Compile Include="Bindings\BindingFactory.cs" />
     <Compile Include="Bindings\PageBindingFactory.cs" />
-    <Compile Include="View\ViewBindingParser.cs" />
+    <Compile Include="Core.cs" />
+    <Compile Include="View\Parsing\BindingParser.cs" />
+    <Compile Include="View\Parsing\ViewTokenizer.cs" />
     <Compile Include="View\Element\EditViewElement.cs" />
     <Compile Include="View\Element\Element.cs" />
     <Compile Include="View\Element\UnknownElement.cs" />
-    <Compile Include="View\Node.cs" />
+    <Compile Include="View\Model\Node.cs" />
     <Compile Include="View\Visitor\IVisitor.cs" />
-    <Compile Include="PageFactory.cs" />
+    <Compile Include="View\PageFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="View\Visitor\TextBindingVisitor.cs" />
-    <Compile Include="AndroidConstants.cs" />
+    <Compile Include="View\Visitor\TokenWalker.cs" />
+    <Compile Include="View\Visitor\Visitors\TextBindingVisitor.cs" />
+    <Compile Include="Constants\AndroidConstants.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\MVVM.Common\MVVM.Common.csproj">

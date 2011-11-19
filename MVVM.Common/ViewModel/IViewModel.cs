@@ -27,11 +27,12 @@
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
-namespace MonoMobile.Views
-{
-	using System.ComponentModel;
 
-	public interface IViewModel: INotifyPropertyChanged
+using System.ComponentModel;
+
+namespace MVVM.Common.ViewModel
+{
+    public interface IViewModel: INotifyPropertyChanged
 	{
 
 	}

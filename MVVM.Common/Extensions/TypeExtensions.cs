@@ -27,6 +27,9 @@
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
+
+using System.Collections.Generic;
+
 namespace MonoMobile.Views
 {
 	using System;
@@ -190,5 +193,29 @@ namespace MonoMobile.Views
 			return baseType.IsGenericType && baseType.GetGenericTypeDefinition() == genericType || IsAssignableToGenericType(baseType, genericType);
 		}
 	}
+
+    public static class Utils
+    {
+        public static List<Type> GetSubclassesOf(this Type type, bool ignoreSystem)
+        {
+            List<Type> lReturn = new List<Type>();
+            foreach (var a in System.Threading.Thread.GetDomain().GetAssemblies())
+            {
+                if (ignoreSystem && a.FullName.StartsWith("System."))
+                {
+                    continue;
+                }
+                foreach (var t in a.GetTypes())
+                {
+                    if (t.IsSubclassOf(type) || (type.IsInterface && t.GetInterfaces().FirstOrDefault(e => e.FullName == type.FullName) != null))
+                    {
+                        lReturn.Add(t);
+                    }
+                }
+            }
+            return lReturn;
+        }
+
+    }
 }
 

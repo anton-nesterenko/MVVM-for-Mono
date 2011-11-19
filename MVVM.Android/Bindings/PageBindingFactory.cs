@@ -36,6 +36,11 @@ namespace Mvvm.Android.Bindings
             }
 
             bindings.Add(binding);
+
+            _bindingsForCurrentPage.Add(_bindingFactory.Create((ViewModel)binding.Target, 
+                                        binding.Source.ToString(),
+                                        binding.TargetPath, 
+                                        binding));
         }
 
         /// <summary>
@@ -47,12 +52,17 @@ namespace Mvvm.Android.Bindings
         /// <param name="page"></param>
         public void CreateInstancesForPage(and.View page)
         {
-            _bindingsForCurrentPage.Clear();
+            ClearCurrentBindings();
 
             foreach (var binding in _perPageBindings[page])
             {
                 Add(page, binding);
             }
+        }
+
+        private void ClearCurrentBindings()
+        {
+            _bindingsForCurrentPage.Clear();
         }
     }
 }
