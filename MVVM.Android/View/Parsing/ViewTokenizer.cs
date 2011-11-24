@@ -54,7 +54,7 @@ namespace Mvvm.Android.View
             var id = element.Attribute(XName.Get(Mvvm.Android.BindingConstants.IdString, AndroidConstants.AndroidBindingNamespace)).Value;
             var properties = element.Attributes()
                                     .Where(a => !a.Name.LocalName.Equals(Mvvm.Android.BindingConstants.IdString) && HasBindingExpression(a.Value))
-                                    .ToDictionary(a => a.Name.LocalName, a => ParseBindingExpression(a.Value));
+                                    .ToDictionary(a => a.Name.LocalName, a => ParseBindingExpression(a.Name.LocalName, a.Value));
 
             switch (element.Name.LocalName)
             {
@@ -81,9 +81,9 @@ namespace Mvvm.Android.View
             return value.StartsWith("{Binding") && value.EndsWith("}"); // we only want to pass the attributes that have our binding syntax in it.
         }
 
-        private static Binding ParseBindingExpression(string value)
+        private static Binding ParseBindingExpression(string targetPath, string bindingValue)
         {
-            return BindingFetcher.Instance.GetBinding(value.Substring(8, value.Length - 9));
+            return BindingFetcher.Instance.GetBinding(targetPath, bindingValue.Substring(8, bindingValue.Length - 9));
         }
     }
 }

@@ -32,7 +32,7 @@ namespace Mvvm.Android
 
         private IVisitor GetInstance(Type type)
         {
-            return TypeResolver(type);
+            return TypeResolver.Invoke(type);
         }
 
         /// <summary>

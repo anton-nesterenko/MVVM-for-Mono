@@ -47,7 +47,7 @@ namespace Mvvm.Android.View
 
         }
 
-        public Binding GetBinding(string attValue)
+        public Binding GetBinding(string targetPath, string attValue)
         {
             IList<String> list = new List<String>();
             StringBuilder builder = new StringBuilder(attValue.Length);
@@ -95,7 +95,7 @@ namespace Mvvm.Android.View
                     }
                 }
             }
-            return new Binding(path) { Converter = con };
+            return new Binding(path,targetPath) { Converter = con };
         }
 
         private IValueConverter GetConverter(string converterName)
