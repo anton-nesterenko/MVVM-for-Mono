@@ -36,65 +36,106 @@ namespace Mvvm.Android
 
         public override void SetContentView(int layoutResID)
         {
-            var view = this.LayoutInflater.Inflate(layoutResID, null);
+			  
+			var text =  this.Resources.GetText(layoutResID);
             var resourceName = this.Resources.GetResourceName(layoutResID);
-			var resource = this.Resources.GetResourceTypeName(layoutResID);
-            TypedValue outValue = new TypedValue();
-            this.Resources.GetValue(layoutResID, outValue, true);
-            var text =  this.Resources.GetText(layoutResID);
+            var resource = this.Resources.GetResourceTypeName(layoutResID);
+			
+			var files = System.Reflection.Assembly.GetAssembly(this.GetType()).GetManifestResourceNames();
+			
+			
+			var ass = System.Reflection.Assembly.GetAssembly(this.GetType()).Location;
+			
+			var dir = Path.GetDirectoryName(ass);
+			var hello = Directory.GetDirectories(dir);
+			var hello2 = Directory.GetFiles(dir);
+            var viewName = Path.GetFileName(text);
+			viewName = string.Format("Android.Mvvm.TestApp.Views.Main.axml", viewName);
+			
+			string contant;
+			
+			using (var reader = new StreamReader(System.Reflection.Assembly.GetAssembly(this.GetType()).GetManifestResourceStream(viewName)))
+            {
+                contant = reader.ReadToEnd();
+            }
+			
+            //var stream = ass.GetManifestResourceStream(viewName);
+            
+			
+			
+			
+            //var view = this.LayoutInflater.Inflate(layoutResID, null);
+            
+            //TypedValue outValue = new TypedValue();
+            
+            
 
            // var  myxml = this.
 
 
-            ClassLoader loader = Class.ClassLoader;
+            //ClassLoader loader = Class.ClassLoader;
            
-            var resourceAsStream = loader.GetResourceAsStream(text);
-            using (var reader = new StreamReader(resourceAsStream, Encoding.UTF8))
-            {
-                var constant = reader.ReadToEnd();
-            }
+            ////var resourceAsStream = loader.GetResourceAsStream(text);
+            //using (var reader = new StreamReader(stream))
+            //{
+            //    var constant = reader.ReadToEnd();
+            //}
 
 
 
 
             //this.LayoutInflater.Inflate()
-            string UTF8;
-			string ASCII;
-			string Unicode;
-			string zip;
-           
-            using (var strm = Resources.OpenRawResource(layoutResID))
-            {
-                using (var reader = new StreamReader(strm, Encoding.UTF8))
-                {
-                    UTF8 = reader.ReadToEnd();
-                }
-            }
+            //string UTF8;
+			//string ASCII;
+			//string Unicode;
+			//string zip;
 
+            //var en = Encoding.UTF32;
 
-            using (var strm = Resources.OpenRawResource(layoutResID))
-            using (var reader = new StreamReader(strm, Encoding.ASCII))
-            {
-                ASCII = reader.ReadToEnd();
-            }
+            //var fd = Resources.OpenRawResourceFd(layoutResID);
+
+            //var v = Assets.OpenNonAssetFd(text);
+
+            //using (var strm = Resources.OpenRawResource(layoutResID))
+            //{
+            //    using (var reader = new StreamReader(new DeflateStream(strm, CompressionMode.Decompress), en))
+            //    {
+            //        ASCII = reader.ReadToEnd();
+            //    }
+            //}
+
+            //using (var strm = Resources.OpenRawResource(layoutResID))
+            //{
+            //    using (var reader = new StreamReader(strm))
+            //    {
+            //        Unicode = reader.ReadToEnd();
+            //    }
+            //}
+
+			 
+            //using (var strm = Resources.OpenRawResource(layoutResID))
+            //using (var reader = new StreamReader(strm, Encoding.ASCII))
+            //{
+            //    ASCII = reader.ReadToEnd();
+            //}
 			
-			using (var strm = Resources.OpenRawResource(layoutResID))
-            using (var reader = new StreamReader(strm, Encoding.Unicode))
-            {
-                Unicode = reader.ReadToEnd();
-            }
+            //using (var strm = Resources.OpenRawResource(layoutResID))
+            //using (var reader = new StreamReader(strm, Encoding.Unicode))
+            //{
+            //    Unicode = reader.ReadToEnd();
+            //}
 
-            using (var strm = Resources.OpenRawResource(layoutResID))
-            {
-                //using (var reader = new StreamReader(new GZipStream(strm, CompressionMode.Decompress)))
-                //{
-                //    zip = reader.ReadToEnd();
-                //}
-            }
+            //using (var strm = Resources.OpenRawResource(layoutResID))
+            //{
+            //    //using (var reader = new StreamReader(new GZipStream(strm, CompressionMode.Decompress)))
+            //    //{
+            //    //    zip = reader.ReadToEnd();
+            //    //}
+            //}
 
-            Stream parser = this.Resources.OpenRawResource(layoutResID,outValue);
+            //Stream parser = this.Resources.OpenRawResource(layoutResID,outValue);
 
-            var xmlDocument = XDocument.Load(parser);
+            ////var xmlDocument = XDocument.Load(parser);
 
 
 
@@ -103,7 +144,7 @@ namespace Mvvm.Android
 		
 	}
 
-    public class BindingViewFactory : LayoutInflater.IFactory
+    public class BindingViewFactory :Java.Lang.Object, LayoutInflater.IFactory
     {
         private readonly LayoutInflater _layoutInflater;
 
@@ -114,11 +155,7 @@ namespace Mvvm.Android
 
         #region Implementation of IJavaObject
 
-        public IntPtr Handle
-        {
-            get { throw new NotImplementedException(); }
-        }
-
+        
         public global::Android.Views.View OnCreateView(string name, Context context, IAttributeSet attrs)
         {
 			String viewFullName = string.Format("android.widget.{0}",name); // this is bad as it will only do the normal controls....
