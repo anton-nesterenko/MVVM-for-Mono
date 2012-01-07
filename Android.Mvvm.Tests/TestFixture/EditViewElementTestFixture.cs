@@ -49,8 +49,10 @@ namespace Android.Mvvm.Tests.TestFixture
 			Assert.True(element.Properties.Count > 0);
 
             Assert.True(element.Properties.ContainsKey(BindingConstants.Attributes.Text));
-
-            Assert.True(element.Properties[BindingConstants.Attributes.Text].TargetPath.Equals("."));
+			
+			var objecttest = element.Properties[BindingConstants.Attributes.Text];
+			
+            Assert.True(element.Properties[BindingConstants.Attributes.Text].SourcePath.Equals("."));
 		}
 		
 		[Test]
@@ -110,7 +112,7 @@ namespace Android.Mvvm.Tests.TestFixture
 
             Assert.True(element.Properties.ContainsKey(BindingConstants.Attributes.Text));
 
-            Assert.True(element.Properties[BindingConstants.Attributes.Text].TargetPath.Equals("TestPath"));
+            Assert.True(element.Properties[BindingConstants.Attributes.Text].SourcePath.Equals("TestPath"));
             
         }
 
@@ -172,7 +174,7 @@ namespace Android.Mvvm.Tests.TestFixture
 
             Assert.True(element.Properties.ContainsKey(BindingConstants.Attributes.Text));
 
-            Assert.True(element.Properties[BindingConstants.Attributes.Text].TargetPath.Equals("TestPath"));
+            Assert.True(element.Properties[BindingConstants.Attributes.Text].SourcePath.Equals("TestPath"));
 
         }
 
@@ -233,7 +235,7 @@ namespace Android.Mvvm.Tests.TestFixture
 
             Assert.True(element.Properties.ContainsKey(BindingConstants.Attributes.Text));
 
-            Assert.False(element.Properties[BindingConstants.Attributes.Text].TargetPath.Equals("TestPath"));
+            Assert.False(element.Properties[BindingConstants.Attributes.Text].SourcePath.Equals("TestPath"));
 
         }
 
