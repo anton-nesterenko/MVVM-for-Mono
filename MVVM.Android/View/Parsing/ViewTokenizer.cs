@@ -34,12 +34,16 @@ namespace Mvvm.Android.View
 
         private static void CrawlNodes(XElement element, ref Node<Element.Element> iterator)
         {
-            iterator = CreateElement(element, iterator);
-
-
+            var newElwmwnt = CreateElement(element, iterator);
+			
+			if(iterator == null)
+			{
+				iterator = newElwmwnt;
+			}
+			
             foreach (var node in element.Elements())
             {
-                CrawlNodes(node, ref iterator);
+                CrawlNodes(node, ref  newElwmwnt);
             }
         }
 
@@ -47,25 +51,29 @@ namespace Mvvm.Android.View
 
         private static Node<Element.Element> CreateElement(XElement element, Node<Element.Element> parentResultNode)
         {
-            Node<Element.Element> elementToAdd;
+            Node<Element.Element> elementToAdd = new Node<Element.Element>() { Value = new UnknownElement("0", null) };
 
-
-
-            var id = element.Attribute(XName.Get(Mvvm.Android.BindingConstants.IdString, AndroidConstants.AndroidBindingNamespace)).Value;
-            var properties = element.Attributes()
-                                    .Where(a => !a.Name.LocalName.Equals(Mvvm.Android.BindingConstants.IdString) && HasBindingExpression(a.Value))
-                                    .ToDictionary(a => a.Name.LocalName, a => ParseBindingExpression(a.Name.LocalName, a.Value));
-
-            switch (element.Name.LocalName)
-            {
-			case AndroidConstants.Views.EditTextString:
-                    elementToAdd = new Node<Element.Element>() { Value = new EditViewElement(id, properties) };
-                    break;
-
-                default:
-                    elementToAdd = new Node<Element.Element>() { Value = new UnknownElement(id, properties) };
-                    break;
-            }   
+            var idAtt = element.Attribute(XName.Get(Mvvm.Android.BindingConstants.IdString, AndroidConstants.AndroidNamespace));
+			
+				
+			if(idAtt != null)	
+			{
+				var id = idAtt.Value;
+	            var properties = element.Attributes()
+	                                    .Where(a => !a.Name.LocalName.Equals(Mvvm.Android.BindingConstants.IdString) && HasBindingExpression(a.Value))
+	                                    .ToDictionary(a => a.Name.LocalName, a => ParseBindingExpression(a.Name.LocalName, a.Value));
+	
+	            switch (element.Name.LocalName)
+	            {
+				case AndroidConstants.Views.EditTextString:
+	                    elementToAdd = new Node<Element.Element>() { Value = new EditViewElement(id, properties) };
+	                    break;
+	
+	                default:
+	                    elementToAdd = new Node<Element.Element>() { Value = new UnknownElement(id, properties) };
+	                    break;
+	            }   
+			}
  			if(parentResultNode != null)
 			{
 				parentResultNode.Collection.Add(elementToAdd);

@@ -16,7 +16,7 @@ namespace Mvvm.Android
 	{
 		public const string ExecptionLogTag ="Android.MVVM";
 		
-		public const string AndroidBindingNamespace = "http://schemas.android.com/apk/res/android";
+		public const string AndroidNamespace = "http://schemas.android.com/apk/res/android";
 
         public class Views
         {
