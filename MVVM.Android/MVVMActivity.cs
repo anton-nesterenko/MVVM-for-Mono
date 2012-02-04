@@ -1,5 +1,9 @@
 using System;
 using System.Collections.Generic;
+using Android.Widget;
+using MVVM.Common.ViewModel;
+using MonoMobile.Views;
+using Mvvm.Android.Bindings;
 using Mvvm.Android.View;
 using Mvvm.Android.View.Element;
 using io = System.IO;
@@ -10,6 +14,7 @@ using Android.Content;
 using Android.OS;
 using Android.Util;
 using util = Android.Util;
+using views = Android.Views;
 using Android.Views;
 using String = System.String;
 
@@ -17,46 +22,22 @@ namespace Mvvm.Android
 {
     public class MvvmActivity : Activity
     {
-        public override void SetContentView(int layoutResID)
-        {	
-			string contant;
-			var stream = EmbeddedResource.Instance.GetStream(this, layoutResID);
+        public void SetContentView(int layoutResId, IViewModel viewModel)
+        {
+            var stream = EmbeddedResource.Instance.GetStream(this, layoutResId);
 
-            var _node = ViewTokenizer.Parser(stream);
-			
-            this.LayoutInflater.Factory = new BindingViewFactory(this.LayoutInflater, _node);
-            
-			base.SetContentView(layoutResID);
-        }
-		
+            var node = ViewTokenizer.Parser(stream);
+
+            var pageBinding = new PageBindingFactory(this.LayoutInflater, node, viewModel);
+
+            this.LayoutInflater.Factory = pageBinding;
+
+            base.SetContentView(layoutResId);
+
+            pageBinding.Bind();
+		}
 	}
 
-    public class BindingViewFactory :Java.Lang.Object, LayoutInflater.IFactory
-    {
-        private readonly LayoutInflater _layoutInflater;
-        private readonly Node<Element> _node;
-
-        public BindingViewFactory(LayoutInflater layoutInflater, Node<View.Element.Element> node)
-        {
-            _layoutInflater = layoutInflater;
-            _node = node;
-        }
-
-        public global::Android.Views.View OnCreateView(string name, Context context, IAttributeSet attrs)
-        {
-			String viewFullName = string.Format("android.widget.{0}",name); // this is bad as it will only do the normal controls....
-           	var id = attrs.GetAttributeValue(AndroidConstants.AndroidNamespace, BindingConstants.IdString);
-            
-			
-			var view = _layoutInflater.CreateView(viewFullName, null, attrs);
-            
-			if(view == null || id == null)
-			{
-                return view;
-			}
-			return null;
-        }
-    }
 
     public class EmbeddedResource
     {
@@ -64,15 +45,7 @@ namespace Mvvm.Android
 
         public static EmbeddedResource Instance
         {
-            get
-            {
-                if (_embeddedResource == null)
-                {
-                    _embeddedResource = new EmbeddedResource();
-                }
-
-                return _embeddedResource;
-            }
+            get { return _embeddedResource ?? (_embeddedResource = new EmbeddedResource()); }
         }
 
         private IDictionary<Assembly,IList<string>> assemblyfileNames; 

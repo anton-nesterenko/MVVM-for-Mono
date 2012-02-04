@@ -57,6 +57,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AndroidModule.cs" />
+    <Compile Include="Bindings\IViewWatcher.cs" />
     <Compile Include="Constants\BindingConstants.cs" />
     <Compile Include="Bindings\BindingFactory.cs" />
     <Compile Include="Bindings\PageBindingFactory.cs" />

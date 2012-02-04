@@ -1,14 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:binding="MVVM.Android.Binding"
     android:orientation="vertical"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    >
-<EditText
-	android:id="@+id/editText"			
-    android:layout_width="fill_parent" 
+>
+  <EditText binding:id="TextField1"
+            android:id="@+id/editText"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            binding:text="{Binding Path=Rhys}"
+            />
+  <!--<TextView android:id="@+id/editText"
+            binding:id="Label1"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            binding:text="{binding Path=Label}"
+            />-->
+  <TextView
+    binding:id="label1"
+    android:layout_width="fill_parent"
     android:layout_height="wrap_content"
-    android:text="{Binding Path=Rhys}"
+    binding:text="{binding Path=Label}"
     />
 </LinearLayout>
-

@@ -64,45 +64,53 @@ namespace MonoMobile.Views
 				bindingFlags = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static | BindingFlags.Instance | BindingFlags.FlattenHierarchy;
 			
 			Type type = sourceType;
-			
-			if (path.Contains("."))
-			{
-				MemberInfo info = null;
-				var members = path.Split('.');
-				for (int index = 0; index < members.Length; index++)
-				{
-					var member = members[index];
-					info = type.GetMember(member, bindingFlags).FirstOrDefault();
-					if (info != null)
-					{
-						if (obj != null && index < members.Length - 1)
-						{
-							try
-							{
-								if (info.MemberType == MemberTypes.Field)
-									obj = ((FieldInfo)info).GetValue(obj);
 
-								if (info.MemberType == MemberTypes.Property)
-									obj = ((PropertyInfo)info).GetValue(obj, null);
-								
-								if (obj != null)
-									type = obj.GetType();
-							}
-							catch (TargetInvocationException)
-							{
-							}
-						}
-					}
-					else
-						break;
-				}	
-				return info;
-			}
-			else
-				return type.GetMember(path, bindingFlags).FirstOrDefault();
+            if (path.Contains("."))
+            {
+                MemberInfo info = null;
+                var members = path.Split('.');
+                for (int index = 0; index < members.Length; index++)
+                {
+                    var member = members[index];
+                    info = GetMember(bindingFlags, member, type);
+                    if (info == null)
+                    {
+                        break;
+                    }
+
+                    if (obj != null && index < members.Length - 1)
+                    {
+                        try
+                        {
+                            if (info.MemberType == MemberTypes.Field)
+                                obj = ((FieldInfo)info).GetValue(obj);
+
+                            if (info.MemberType == MemberTypes.Property)
+                                obj = ((PropertyInfo)info).GetValue(obj, null);
+
+                            if (obj != null)
+                                type = obj.GetType();
+                        }
+                        catch (TargetInvocationException)
+                        {
+                        }
+                    }
+                }
+                return info;
+            }
+            else
+                return GetMember(bindingFlags, path, type);
+                    
+                    
 		}
 
-		public static Type GetMemberType(this MemberInfo member)
+	    private static MemberInfo GetMember(BindingFlags bindingFlags, string path, Type type)
+	    {
+            var member = type.GetMember(path, bindingFlags).FirstOrDefault();
+            return member ?? type.GetMembers(bindingFlags).Where(mem => mem.Name.Equals(path, StringComparison.InvariantCultureIgnoreCase)).FirstOrDefault();
+	    }
+
+	    public static Type GetMemberType(this MemberInfo member)
 		{
 			if (member.MemberType == MemberTypes.Field)
 			{

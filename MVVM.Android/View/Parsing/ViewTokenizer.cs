@@ -1,13 +1,10 @@
-using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Text.RegularExpressions;
 using System.Xml;
 using System.Xml.Linq;
 using MonoMobile.Views;
 using Mvvm.Android.View.Element;
+using Mvvm.Android.View.Parsing;
 using andUtil = Android.Util;
 
 namespace Mvvm.Android.View
@@ -53,14 +50,14 @@ namespace Mvvm.Android.View
         {
             Node<Element.Element> elementToAdd = new Node<Element.Element>() { Value = new UnknownElement("0", null) };
 
-            var idAtt = element.Attribute(XName.Get(Mvvm.Android.BindingConstants.IdString, AndroidConstants.AndroidNamespace));
+            var idAtt = element.Attribute(XName.Get(Mvvm.Android.BindingConstants.IdString, BindingConstants.BindingNamespace));
 			
 				
 			if(idAtt != null)	
 			{
 				var id = idAtt.Value;
 	            var properties = element.Attributes()
-	                                    .Where(a => !a.Name.LocalName.Equals(Mvvm.Android.BindingConstants.IdString) && HasBindingExpression(a.Value))
+	                                    .Where(a => !a.Name.LocalName.Equals(Mvvm.Android.BindingConstants.IdString) && HasBindingExpression(a))
 	                                    .ToDictionary(a => a.Name.LocalName, a => ParseBindingExpression(a.Name.LocalName, a.Value));
 	
 	            switch (element.Name.LocalName)
@@ -84,9 +81,9 @@ namespace Mvvm.Android.View
             return elementToAdd;
         }
 
-        private static bool HasBindingExpression(string value)
+        private static bool HasBindingExpression(XAttribute att)
         {
-            return value.StartsWith("{Binding") && value.EndsWith("}"); // we only want to pass the attributes that have our binding syntax in it.
+            return att.Name.NamespaceName.Equals(BindingConstants.BindingNamespace);     //value.StartsWith("{Binding") && value.EndsWith("}"); // we only want to pass the attributes that have our binding syntax in it.
         }
 
         private static Binding ParseBindingExpression(string targetPath, string bindingValue)

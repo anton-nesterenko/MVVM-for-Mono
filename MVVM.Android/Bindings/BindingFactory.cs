@@ -37,6 +37,10 @@ namespace Mvvm.Android.Bindings
 				// find the member...
 				propertyInfo = type.GetMember(targetProperty).FirstOrDefault(); 
 				
+                if(propertyInfo == null)
+                {
+                    return null;
+                }
 				propertyDic[targetProperty] = propertyInfo;
 			}
             var bindingExpression = new BindingExpression(binding, propertyInfo, viewModel);

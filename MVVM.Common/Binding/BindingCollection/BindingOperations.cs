@@ -38,7 +38,6 @@ namespace MonoMobile.Views
 	using System.ComponentModel;
 	using System.Linq;
 	using System.Reflection;
-	using MonoMobile.Views;
 
 	public static class BindingOperations
 	{
@@ -62,25 +61,33 @@ namespace MonoMobile.Views
 		{
 			var bindingExpressions = GetBindingExpressionsForElement(element);
 			foreach(var bindingExpression in bindingExpressions)
-				ClearBinding(bindingExpression.Binding.Target, bindingExpression.Binding.TargetPath);
+			{
+			    ClearBinding(bindingExpression.Binding.Target, bindingExpression.Binding.TargetPath);
+			}
 		}
 
 		public static void ClearBinding(object target, string property)
 		{
 			var bindingExpression = GetBindingExpression(target, property);
 			if (bindingExpression != null)
-				_BindingExpressions.Remove(bindingExpression);
+			{
+			    _BindingExpressions.Remove(bindingExpression);
+			}
 
 			var binding = _Bindings.SingleOrDefault((kvp)=>kvp.Key.Object == target && kvp.Key.Property == property);
 			if (binding.Key != null)
-				_Bindings.Remove(binding.Key);
+			{
+			    _Bindings.Remove(binding.Key);
+			}
 		}
 
 		public static Binding GetBinding(object target, string property)
 		{
 			var bindingExpression = GetBindingExpression(target, property);
 			if (bindingExpression != null)
-				return bindingExpression.Binding;
+			{
+			    return bindingExpression.Binding;
+			}
 
 			return null;
 		}
@@ -222,16 +229,22 @@ namespace MonoMobile.Views
 				var binderKey =_Bindings.SingleOrDefault((kvp)=>kvp.Key.Object == target && kvp.Key.Property == targetProperty).Key;
 
 				if (binderKey == null)
-					_Bindings.Add(new PropertyBinder() { Object = target, Property = targetProperty }, binding);
+				{
+				    _Bindings.Add(new PropertyBinder() { Object = target, Property = targetProperty }, binding);
+				}
 				else
-					_Bindings[binderKey] = binding;
+				{
+				    _Bindings[binderKey] = binding;
+				}
 			}
 			
 			if (bindablePropertyInfo != null)
 			{
 				var bindableProperty = bindablePropertyInfo.GetValue(dataBinding) as BindableProperty;
 				if (bindableProperty != null)
-					bindableProperty.BindingExpression = bindingExpression;
+				{
+				    bindableProperty.BindingExpression = bindingExpression;
+				}
 			}
 
 			return bindingExpression;

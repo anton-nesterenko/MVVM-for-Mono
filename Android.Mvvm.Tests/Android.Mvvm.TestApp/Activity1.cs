@@ -2,6 +2,7 @@ using System;
 
 using Android.App;
 using Android.Content;
+using Android.Mvvm.TestApp.ViewModels;
 using Android.Runtime;
 using Android.Views;
 using Android.Widget;
@@ -13,14 +14,12 @@ namespace Android.Mvvm.TestApp
 	[Activity (Label = "Android.Mvvm.TestApp", MainLauncher = true)]
     public class Activity1 : MvvmActivity
 	{
-		
-
 		protected override void OnCreate (Bundle bundle)
 		{
 			base.OnCreate (bundle);
 
 			// Set our view from the "main" layout resource
-			SetContentView (Resource.Layout.Main);
+			SetContentView (Resource.Layout.Main, new MainViewModel());
 
 			// Get our button from the layout resource,
 			// and attach an event to it

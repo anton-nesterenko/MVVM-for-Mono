@@ -5,7 +5,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using MonoMobile.Views;
 
-namespace Mvvm.Android.View
+namespace Mvvm.Android.View.Parsing
 {
     public class BindingFetcher
     {
@@ -47,7 +47,7 @@ namespace Mvvm.Android.View
 
         }
 
-        public Binding GetBinding(string targetPath, string attValue)
+        public Binding  GetBinding(string sorucePath, string attValue)
         {
             IList<String> list = new List<String>();
             StringBuilder builder = new StringBuilder(attValue.Length);
@@ -68,7 +68,7 @@ namespace Mvvm.Android.View
             }
 
             IValueConverter con = null;
-            string path = ".";
+            string targetpath = ".";
 
             if (list.Count > 0)
             {
@@ -81,7 +81,7 @@ namespace Mvvm.Android.View
                     switch (k)
                     {
                         case BindingConstants.PathString:
-                            path = v;
+                            targetpath = v;
                             break;
                         case BindingConstants.ConverterString:
                             con = GetConverter(v);
@@ -89,13 +89,13 @@ namespace Mvvm.Android.View
 						default:
 							if(list.Count == 1)
 							{
-								path = kvp.Trim();
+                                targetpath = kvp.Trim();
 							}
 							break;
                     }
                 }
             }
-            return new Binding(path,targetPath) { Converter = con };
+            return new Binding(sorucePath, targetpath) { Converter = con };
         }
 
         private IValueConverter GetConverter(string converterName)
